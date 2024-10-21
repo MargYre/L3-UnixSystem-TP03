@@ -68,12 +68,7 @@ exit 0
 ## Exercice : Afficher le contenu d’un répertoire
 ```
 #!/bin/bash
-var="Hello World"
 nb_param="$#"
-name_program="$0"
-thirdh_param="$3"
-list_param="$@"
-computer_name="$(hostname)"
 my_file="$1"
 
 if [ $# -lt 1 ];then
@@ -100,3 +95,15 @@ done
 exit 0
 ```
 *aide: https://stackoverflow.com/questions/2437452/how-to-get-the-list-of-files-in-a-directory-in-a-shell-script*
+
+## Exercice : Lister les utilisateur
+```
+grep '^[^:]*:[^:]*:[1-9][0-9][0-9]:' /etc/passwd | cut -d':' -f1
+```
+```
+#!/bin/bash
+grep '^[^:]*:[^:]*:[1-9][0-9][0-9]:' /etc/passwd | cut -d':' -f1
+```
+*souces: https://www.cyberciti.biz/faq/understanding-etcpasswd-file-format/
+https://unix.stackexchange.com/questions/144705/use-cut-to-extract-a-list-from-etc-passwd
+https://www.unix.com/unix-for-dummies-questions-and-answers/248183-extract-user-accounts-home-directory-etc-passwd.html*
