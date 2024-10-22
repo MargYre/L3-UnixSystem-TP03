@@ -157,18 +157,37 @@ exit 1
 ## Exercice : Creation utilisateur
 ```
 #!/bin/bash
-if [ $# -lt 2 ]; then
-    echo "Usage: $0 -login <username> | -uid <UID>"
+#check if running as root in a bash script
+if [ "$EUID" -ne 0 ]; then
+    echo "Please run as root.\n"
     exit 1
 fi
+#check args
+if [ $# -lt 2 ]; then
+    echo "Usage: $0 -login <username> | -uid <UID>\n"
+    exit 1
+fi
+# Récup args
 user_type=$1
 user_value=$2
-./does_user_exist.sh "$user_type" "$user_value"
-if [ $? -eq 0 ]; then
-    echo "L'utilisateur existe."
+#Check if home directory exists
+if [ -d "/home/$user_value" ]; then
+    echo "Error : /home/$user_value already exists.\n"
+    exit 1
 else
-    echo "L'utilisateur n'existe pas."
+    echo "/home/$user_value not find. You can create a user.\n"
 fi
+#Call script does_user_exist.sh
+./does_user_exist.sh "$user_type" "$user_value"
+#
+if [ $? -eq 0 ]; then # contient le code de retour (ou exit status) de la dernière commande exécutée.
+    echo "User exist"
+else
+    echo "User does not exist"
+fi
+
+exit 0
 ```
 *https://www.cyberciti.biz/tips/howto-write-shell-script-to-add-user.html
-https://stackoverflow.com/questions/18215973/how-to-check-if-running-as-root-in-a-bash-script*
+https://stackoverflow.com/questions/18215973/how-to-check-if-running-as-root-in-a-bash-script
+https://www.malekal.com/la-commande-useradd-utilisations-et-exemples/*
