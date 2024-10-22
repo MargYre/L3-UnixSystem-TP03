@@ -170,4 +170,5 @@ else
     echo "L'utilisateur n'existe pas."
 fi
 ```
-*https://www.cyberciti.biz/tips/howto-write-shell-script-to-add-user.html*
+*https://www.cyberciti.biz/tips/howto-write-shell-script-to-add-user.html
+https://stackoverflow.com/questions/18215973/how-to-check-if-running-as-root-in-a-bash-script*
