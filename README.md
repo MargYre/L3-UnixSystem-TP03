@@ -97,13 +97,46 @@ exit 0
 *aide: https://stackoverflow.com/questions/2437452/how-to-get-the-list-of-files-in-a-directory-in-a-shell-script*
 
 ## Exercice : Lister les utilisateur
-```
-grep '^[^:]*:[^:]*:[1-9][0-9][0-9]:' /etc/passwd | cut -d':' -f1
-```
+**for user in $(cat /etc/passwd); do echo $user; done permet preque de
+parcourir les lignes du dit fichier. Cependant, quel est le problème ?**
+Le fichier /etc/passwd est découper en fonction des espaces avec la commande. 
+
+**Utilisation de cut**
 ```
 #!/bin/bash
 grep '^[^:]*:[^:]*:[1-9][0-9][0-9]:' /etc/passwd | cut -d':' -f1
 ```
+**Utilisation de awk**
+```
+#!/bin/bash
+awk -F: '($3 >= 100) && ($7 != "/sbin/nologin") { print $1 }' /etc/passwd
+```
 *souces: https://www.cyberciti.biz/faq/understanding-etcpasswd-file-format/
 https://unix.stackexchange.com/questions/144705/use-cut-to-extract-a-list-from-etc-passwd
 https://www.unix.com/unix-for-dummies-questions-and-answers/248183-extract-user-accounts-home-directory-etc-passwd.html*
+
+## Exercice : Mon utilisateur existe t’il ?
+```
+#!/bin/bash
+printf "arg1: %s |" "$1"
+printf " arg2: %s\n" "$2"
+#grep peter /etc/passwd #egrep to check more than one user
+if [ $# -lt 2 ]; then
+    echo "Please enter -login or -UID"
+    exit 1
+fi
+#login. Get username (login) 
+if [ $1 = "-login" ]; then
+    get_logins=$(cut -d: -f1 /etc/passwd) #capture de sortie
+    for user in $get_logins; do
+        if [ "$user" = "$2" ]; then
+            echo "user exists"
+            exit 0
+	fi
+    done
+    printf "User does not exist\n"
+fi
+exit 0
+
+```
+*https://stackoverflow.com/questions/14810684/check-whether-a-user-exists#:~:text=user%20infomation%20is%20stored%20in,%22no%20such%20user%22%20message.*
