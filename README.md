@@ -206,3 +206,12 @@ exit 0
 *https://www.cyberciti.biz/tips/howto-write-shell-script-to-add-user.html
 https://stackoverflow.com/questions/18215973/how-to-check-if-running-as-root-in-a-bash-script
 https://www.malekal.com/la-commande-useradd-utilisations-et-exemples/*
+
+## Exercice : lecture au clavier
+**comment quitter more ?** touche q.
+**comment avancer d’une ligne ?** touche entrée.
+**comment avancer d’une page ?** touche espace.
+**comment remonter d’une page ?** touche b.
+**comment chercher une chaı̂ne de caractères ? Passer à l’occurence suivante ?** touche / suivi de la chaîne recherchée, puis n pour passer à l'occurrence suivante.
+
+## Exercice : appréciation
