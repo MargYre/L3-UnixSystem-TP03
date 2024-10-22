@@ -170,22 +170,37 @@ fi
 # Récup args
 user_type=$1
 user_value=$2
+printf user_type: %s - user_value: %s\n "$user_type" "$user_value"
+#Us read to ask questions to the user
+read -p "Enter login (username) : " login
+read -p "Enter last name : " nom
+read -p "Enter first name : " prenom
+read -p "UID : " custom_uid
+read -p "GID : " custom_gid
+read -p "Commentaires : " custom_comment
 #Check if home directory exists
-if [ -d "/home/$user_value" ]; then
-    echo "Error : /home/$user_value already exists.\n"
+if [ -d "/home/$login" ]; then
+    echo "Error : /home/$login already exists."
     exit 1
 else
-    echo "/home/$user_value not find. You can create a user.\n"
+    echo "/home/$user_value not find. You can create a user."
 fi
 #Call script does_user_exist.sh
-./does_user_exist.sh "$user_type" "$user_value"
-#
-if [ $? -eq 0 ]; then # contient le code de retour (ou exit status) de la dernière commande exécutée.
-    echo "User exist"
+./does_user_exist.sh "-login" "$login"
+# if user exist then exit else create user
+if [ $? -eq 0 ]; then # $? = contient le code de retour (ou exit status) de la dernière commande exécutée.
+    echo "User already exist"
+    exit 1
 else
-    echo "User does not exist"
+    echo "User does not exist, let's create it"
+    useradd -m -d "/home/$login" -u "$custom_uid" -g "$custom_gid" -c "$custom_comment" "$login"
+    if [ $? -eq 0 ]; then
+        echo "L'utilisateur $login a été créé avec succès."
+    else
+        echo "Erreur lors de la création de l'utilisateur."
+        exit 1
+    fi
 fi
-
 exit 0
 ```
 *https://www.cyberciti.biz/tips/howto-write-shell-script-to-add-user.html
