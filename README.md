@@ -122,21 +122,34 @@ printf "arg1: %s |" "$1"
 printf " arg2: %s\n" "$2"
 #grep peter /etc/passwd #egrep to check more than one user
 if [ $# -lt 2 ]; then
-    echo "Please enter -login or -UID"
+    echo "Please enter -login or -uid (followeb by a login or UID)"
     exit 1
 fi
 #login. Get username (login) 
-if [ $1 = "-login" ]; then
+if [ "$1" = "-login" ]; then
     get_logins=$(cut -d: -f1 /etc/passwd) #capture de sortie
     for user in $get_logins; do
         if [ "$user" = "$2" ]; then
             echo "user exists"
+            uid=$(grep "^$user:" /etc/passwd | cut -d: -f3)
+            printf "UID of the user:: %s\n" "$uid"
             exit 0
 	fi
     done
     printf "User does not exist\n"
 fi
+#UID
+if [ "$1" = "-uid" ]; then
+    get_uids=$(cut -d: -f3 /etc/passwd) #$() = capture de sortie
+    for uid in $get_uids; do
+        if [ "$uid" = "$2" ]; then
+            echo "user exists"
+            printf "UID of the user: %s\n" "$uid"
+            exit 0
+	fi
+    done
+    printf "No user with UID %s\n" "$2"
+fi
 exit 0
-
 ```
 *https://stackoverflow.com/questions/14810684/check-whether-a-user-exists#:~:text=user%20infomation%20is%20stored%20in,%22no%20such%20user%22%20message.*
