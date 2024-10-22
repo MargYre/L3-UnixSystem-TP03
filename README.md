@@ -150,6 +150,24 @@ if [ "$1" = "-uid" ]; then
     done
     printf "No user with UID %s\n" "$2"
 fi
-exit 0
+exit 1
 ```
-*https://stackoverflow.com/questions/14810684/check-whether-a-user-exists#:~:text=user%20infomation%20is%20stored%20in,%22no%20such%20user%22%20message.*
+*aide: https://stackoverflow.com/questions/14810684/check-whether-a-user-exists#:~:text=user%20infomation%20is%20stored%20in,%22no%20such%20user%22%20message.*
+
+## Exercice : Creation utilisateur
+```
+#!/bin/bash
+if [ $# -lt 2 ]; then
+    echo "Usage: $0 -login <username> | -uid <UID>"
+    exit 1
+fi
+user_type=$1
+user_value=$2
+./does_user_exist.sh "$user_type" "$user_value"
+if [ $? -eq 0 ]; then
+    echo "L'utilisateur existe."
+else
+    echo "L'utilisateur n'existe pas."
+fi
+```
+*https://www.cyberciti.biz/tips/howto-write-shell-script-to-add-user.html*
