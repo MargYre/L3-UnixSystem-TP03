@@ -214,4 +214,50 @@ https://www.malekal.com/la-commande-useradd-utilisations-et-exemples/*
 **comment remonter d’une page ?** touche b.
 **comment chercher une chaı̂ne de caractères ? Passer à l’occurence suivante ?** touche / suivi de la chaîne recherchée, puis n pour passer à l'occurrence suivante.
 
+```
+#!/bin/bash
+if [ $# -lt 1 ]; then
+    echo "Wrong arguments"
+    echo "Usage: ./<script name> <repository>"
+    exit 1
+fi
+for fichier in "$1"/*; do
+    if file "$fichier" | grep -q 'text'; then #-q = grep ne produit aucune sortie, mais retourne 0 si le mot est trouvé
+        read -p "Voulez-vous visualiser le fichier $fichier ? (y/n) " choix
+        if [ "$choix" = "y" ]; then
+            more "$fichier"
+        fi
+    fi
+done
+exit 0
+```
 ## Exercice : appréciation
+```
+#!/bin/bash
+while true; do
+    read -p "Entrer une note : " note
+    if [ "$note" = q ]; then
+        echo "Vous avez quitté le programme."
+        exit 0
+    fi
+    if ! [[ "$note" =~ ^[0-9]+$ ]]; then
+        echo "Veuillez entrer un nombre valide."
+        continue
+    fi
+    if (( note >= 16 && note <= 20 )); then
+        echo "Très bien"
+    elif (( note >= 14 && note < 16 )); then
+        echo "Bien"
+    elif (( note >= 12 && note < 14 )); then
+        echo "Assez bien"
+    elif (( note >= 10 && note < 12 )); then
+        echo "Moyen"
+    elif (( note < 10 )); then
+        echo "Insuffisant"
+    else
+        echo "Note invalide, entrez un nombre entre 0 et 20."
+    fi
+done
+echo "Normalement on quitte le programme uniquement avec la touche q."
+return 1
+```
